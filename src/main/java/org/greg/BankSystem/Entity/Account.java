@@ -1,5 +1,6 @@
 package org.greg.BankSystem.Entity;
 
+import org.greg.BankSystem.Contracts.AccountPolicy;
 import org.greg.BankSystem.Enums.AccountType;
 import org.greg.BankSystem.Enums.TransactionType;
 
@@ -10,25 +11,25 @@ import java.util.List;
 public class Account {
     private double balance;
     private Client client;
-    private AccountType typeAccount;
+    private AccountPolicy policy;
     private List<Transaction> transactions;
 
-    public Account(double balance, Client client, AccountType typeAccount) {
+    public Account(double balance, Client client, AccountPolicy policy) {
         this.client = client;
-        this.typeAccount = typeAccount;
+        this.policy = policy;
         this.transactions = new ArrayList<Transaction>();
         deposit(balance);
     }
 
     public void deposit(double value) {
         if (value <= 0) return;
-        if (!typeAccount.canDeposit(value)) return;
+        if (!policy.canDeposit(value)) return;
         makeTransaction(value, TransactionType.DEPOSIT);
         this.balance += value;
     }
 
     public void withdraw(double value) {
-        if (!typeAccount.canWithdraw(value, balance)) return;
+        if (!policy.canWithdraw(value, balance)) return;
         makeTransaction(value, TransactionType.WITHDRAW);
         this.balance -= value;
     }
@@ -39,7 +40,7 @@ public class Account {
 
     public void printStatement() {
         System.out.println("Cliente: " + client.getName());
-        System.out.println("Conta: " + typeAccount + "\n");
+        System.out.println("Conta: " + policy.getName() + "\n");
 
         for (Transaction t: transactions) {
             String typeSignal = t.getType() == TransactionType.DEPOSIT ? "+" : "-";
