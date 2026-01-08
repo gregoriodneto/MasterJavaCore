@@ -1,5 +1,6 @@
 package org.greg.BankSystem.Entity;
 
+import org.greg.BankSystem.Contracts.DomainEvent;
 import org.greg.BankSystem.Enums.TransactionType;
 
 import java.util.Date;

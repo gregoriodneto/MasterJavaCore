@@ -1,8 +1,12 @@
 package org.greg.BankSystem.Entity;
 
 import org.greg.BankSystem.Contracts.AccountPolicy;
+import org.greg.BankSystem.Dispatcher.EventDispatcher;
 import org.greg.BankSystem.Enums.AccountType;
 import org.greg.BankSystem.Enums.TransactionType;
+import org.greg.BankSystem.Events.DepositEvent;
+import org.greg.BankSystem.Events.WithdrawEvent;
+import org.greg.BankSystem.Listeners.EventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,10 +18,13 @@ public class Account {
     private AccountPolicy policy;
     private List<Transaction> transactions;
 
-    public Account(double balance, Client client, AccountPolicy policy) {
+    private final EventDispatcher dispatcher;
+
+    public Account(double balance, Client client, AccountPolicy policy, EventDispatcher dispatcher) {
         this.client = client;
         this.policy = policy;
         this.transactions = new ArrayList<Transaction>();
+        this.dispatcher = dispatcher;
         deposit(balance);
     }
 
@@ -25,12 +32,14 @@ public class Account {
         if (value <= 0) return;
         if (!policy.canDeposit(value)) return;
         makeTransaction(value, TransactionType.DEPOSIT);
+        dispatcher.dispatch(new DepositEvent(value));
         this.balance += value;
     }
 
     public void withdraw(double value) {
         if (!policy.canWithdraw(value, balance)) return;
         makeTransaction(value, TransactionType.WITHDRAW);
+        dispatcher.dispatch(new WithdrawEvent(value));
         this.balance -= value;
     }
 
