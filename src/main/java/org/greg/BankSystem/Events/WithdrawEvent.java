@@ -14,12 +14,6 @@ public class WithdrawEvent implements DomainEvent {
         this.occurredAt = new Date();
     }
 
-    @Override
-    public String getName() {
-        return TransactionType.WITHDRAW.name();
-    }
-
-    @Override
     public double getValue() {
         return value;
     }

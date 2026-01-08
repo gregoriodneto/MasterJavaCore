@@ -2,11 +2,9 @@ package org.greg.BankSystem.Entity;
 
 import org.greg.BankSystem.Contracts.AccountPolicy;
 import org.greg.BankSystem.Dispatcher.EventDispatcher;
-import org.greg.BankSystem.Enums.AccountType;
 import org.greg.BankSystem.Enums.TransactionType;
 import org.greg.BankSystem.Events.DepositEvent;
 import org.greg.BankSystem.Events.WithdrawEvent;
-import org.greg.BankSystem.Listeners.EventListener;
 
 import java.util.ArrayList;
 import java.util.Date;

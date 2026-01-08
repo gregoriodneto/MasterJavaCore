@@ -1,7 +1,7 @@
 package org.greg.BankSystem.Dispatcher;
 
 import org.greg.BankSystem.Contracts.DomainEvent;
-import org.greg.BankSystem.Listeners.EventListener;
+import org.greg.BankSystem.Contracts.EventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;

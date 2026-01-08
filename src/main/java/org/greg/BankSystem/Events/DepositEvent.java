@@ -14,12 +14,6 @@ public class DepositEvent implements DomainEvent {
         this.occurredAt = new Date();
     }
 
-    @Override
-    public String getName() {
-        return TransactionType.DEPOSIT.name();
-    }
-
-    @Override
     public double getValue() {
         return value;
     }
