@@ -5,12 +5,14 @@ import org.greg.BankSystem.Dispatcher.EventDispatcher;
 import org.greg.BankSystem.Enums.TransactionType;
 import org.greg.BankSystem.Events.DepositEvent;
 import org.greg.BankSystem.Events.WithdrawEvent;
+import org.greg.BankSystem.Utils.RandomString;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Account {
+    private final String id;
     private double balance;
     private Client client;
     private AccountPolicy policy;
@@ -19,6 +21,7 @@ public class Account {
     private final EventDispatcher dispatcher;
 
     public Account(double balance, Client client, AccountPolicy policy, EventDispatcher dispatcher) {
+        this.id = RandomString.generate(8);
         this.client = client;
         this.policy = policy;
         this.transactions = new ArrayList<Transaction>();
@@ -35,7 +38,9 @@ public class Account {
     }
 
     public void withdraw(double value) {
-        if (!policy.canWithdraw(value, balance)) return;
+        if (!policy.canWithdraw(value, balance)) {
+            throw new IllegalStateException("Withdraw not allowed");
+        };
         makeTransaction(value, TransactionType.WITHDRAW);
         dispatcher.dispatch(new WithdrawEvent(value));
         this.balance -= value;
@@ -65,11 +70,17 @@ public class Account {
         return this.transactions.stream().toList();
     }
 
+    public String getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Account{" +
-                "balance=" + balance +
-                ", client=" + client.getName() +
+                "id='" + id + '\'' +
+                ", balance=" + balance +
+                ", client=" + client +
+                ", policy=" + policy +
                 '}';
     }
 }

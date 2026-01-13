@@ -1,7 +1,6 @@
 package org.greg.BankSystem.Listeners;
 
 import org.greg.BankSystem.Contracts.EventListener;
-import org.greg.BankSystem.Enums.TransactionType;
 import org.greg.BankSystem.Events.DepositEvent;
 
 public class DepositAuditListener implements EventListener<DepositEvent> {
